@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Split VCF from TXT</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Split VCF (Upload TXT)</h1>
+
+    <div class="section">
+      <input type="file" id="txtFileInput" accept=".txt" />
+      <p id="totalNumberInfo">Total nomor: 0</p>
+
+      <textarea id="numberTextArea" rows="10" placeholder="Daftar nomor akan muncul di sini..."></textarea>
+
+      <input type="text" id="contactNameInput" placeholder="Nama kontak (misal: mario)" />
+
+      <input type="number" id="contactsPerFile" placeholder="Kontak per file" />
+
+      <!-- TEXTAREA NAMA FILE -->
+      <label>Nama File (1 baris = 1 nama file)</label>
+      <textarea id="fileNamesTextArea" rows="6" placeholder="Contoh:
+Grup A
+Grup B
+Grup C"></textarea>
+
+      <!-- INPUT ZIP NAME -->
+      <input type="text" id="zipFileNameInput" placeholder="Nama file ZIP (opsional)" />
+
+      <button id="splitVCFButton">Split ke VCF</button>
+
+      <div id="splitVcfFiles"></div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
