@@ -33,6 +33,9 @@ document.getElementById("splitVCFButton").addEventListener("click", async functi
   const fileNamesRaw = document.getElementById("fileNamesTextArea").value;
   const zipFileNameInput = document.getElementById("zipFileNameInput").value.trim();
 
+  // ✅ Ambil status checkbox
+  const useFileNameAsContact = document.getElementById("useFileNameAsContact").checked;
+
   if (!rawNumbers) {
     alert("Isi daftar nomor tidak boleh kosong.");
     return;
@@ -66,17 +69,39 @@ document.getElementById("splitVCFButton").addEventListener("click", async functi
 
     const currentFileName = fileNames[chunkIndex]
       ? fileNames[chunkIndex]
-      : fileIndex.toString(); // kalau tidak ada nama → angka
+      : fileIndex.toString();
 
     let vcfContent = "";
 
     chunk.forEach((number, idx) => {
-      const globalIndex = chunkIndex * contactsPerFile + idx + 1;
-      const formattedGlobal = padNumber(globalIndex, digitLength);
 
-      const contactName = nameBase
-        ? `${nameBase} ${formattedGlobal}`
-        : `kontak ${formattedGlobal}`;
+      // ✅ LOGIC NOMOR URUT (RESET / GLOBAL)
+      let nomorUrut;
+
+      if (useFileNameAsContact) {
+        // reset tiap file
+        nomorUrut = idx + 1;
+      } else {
+        // global
+        nomorUrut = chunkIndex * contactsPerFile + idx + 1;
+      }
+
+      const formattedGlobal = padNumber(nomorUrut, digitLength);
+
+      // ✅ LOGIC NAMA KONTAK
+      let contactName;
+
+      if (useFileNameAsContact) {
+        if (nameBase) {
+          contactName = `${nameBase} ${currentFileName} ${formattedGlobal}`;
+        } else {
+          contactName = `${currentFileName} ${formattedGlobal}`;
+        }
+      } else {
+        contactName = nameBase
+          ? `${nameBase} ${formattedGlobal}`
+          : `kontak ${formattedGlobal}`;
+      }
 
       vcfContent += `BEGIN:VCARD\nVERSION:3.0\nFN:${contactName}\nTEL:${number}\nEND:VCARD\n`;
     });
